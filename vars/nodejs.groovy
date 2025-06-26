@@ -43,24 +43,16 @@ def call() {
             stage('Building Artifact') {
                 steps {
                     sh "echo 'Running Building Artifact...'"
-                    sh "cd /app"
                     sh "npm install"
-                    // sh "zip -r %{component}.zip ."
+                    sh "zip -r ${component}-${BUILD_NUMBER}.zip node_modules server.js"
                 }   
             }
-            stage('Tagging The Version') {
+            stage('Pusing Artifact On S3') {
                 steps {
-                    sh "echo 'Tagging the version...'"
-                    sh "echo 'Version tagged successfully!'"
-                }   
-            }
-            stage('Check Versions Availability On Nexus') {
-                steps {
-                    sh "echo 'If it is there, do not upload to Nexus...'"
-                    sh "echo 'If it is not there, uploading to Nexus...'"
+                    sh "aws s3 cp ${component}-${BUILD_NUMBER}.zip s3://clouding-app-shop/${component}/"
+                    sh "aws s3 ls s3://clouding-app-shop/${component}/${component}-${BUILD_NUMBER}.zip"
                 }   
             }
         }
     }
 }
-// ...existing code...
