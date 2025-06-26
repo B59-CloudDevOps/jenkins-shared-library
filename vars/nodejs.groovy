@@ -2,44 +2,50 @@
 def call() {
     pipeline {
         agent any 
+        environment {
+            sonar_psw = credentials('sonar_psw') 
+        }
         stages {
             stage('Lint Checks') {
                 steps {
                     sh "echo 'Running lint checks...'"
                     sh "echo 'Lint checks completed successfully!'"
+                    sh "env"
                 }   
             }
             stage('Sonar Checks') {
                 steps {
                     sh "echo 'Running Sonar checks...'"
-                    sh "echo 'Sonar checks completed successfully!'"
+                    sh "sonar-scanner -Dsonar.host.url=http://sonarqube.clouding-app.shop:9000 -Dsonar.login=admin -Dsonar.password=${sonar_psw} -Dsonar.projectKey=${component}"
                 }   
             }
             stage('Unit Testing') {
                 steps {
                     sh "echo 'Running Unit Testing...'"
                     sh "echo 'Unit Testing completed successfully!'"
-                    sh "sleep 30"
+                    sh "sleep 3"
                 }   
             }
             stage('Integration Testing') {
                 steps {
                     sh "echo 'Running Integration Testing...'"
                     sh "echo 'Integration Testing completed successfully!'"
-                    sh "sleep 60"
+                    sh "sleep 3"
                 }   
             }
             stage('Functional Testing') {
                 steps {
                     sh "echo 'Running Functional Testing...'"
                     sh "echo 'Functional Testing completed successfully!'"
-                    sh "sleep 100"
+                    sh "sleep 3"
                 }   
             }
             stage('Building Artifact') {
                 steps {
                     sh "echo 'Running Building Artifact...'"
-                    sh "echo 'Artifact built successfully!'"
+                    sh "cd /app"
+                    sh "npm install"
+                    // sh "zip -r %{component}.zip ."
                 }   
             }
             stage('Tagging The Version') {
