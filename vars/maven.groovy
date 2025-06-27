@@ -15,6 +15,9 @@ def call() {
                 }   
             }
             stage('Compliling the code') {
+                tools {
+                    maven 'mvn396' 
+                }
                 steps {
                     sh "mvn clean compile"
                 }   
@@ -64,6 +67,9 @@ def call() {
                 }   
             }
             stage('Building Artifact') {
+                tools {
+                    maven 'mvn396' 
+                }
                 steps {
                     sh "echo 'Running Building Artifact...'"
                     sh "mvn clean install"
