@@ -14,6 +14,11 @@ def call() {
                     sh "env"
                 }   
             }
+            stage('Compliling the code') {
+                steps {
+                    sh "mvn clean compile"
+                }   
+            }          
             stage('Sonar Checks') {
                 steps {
                     sh "echo 'Running Sonar checks...'"
