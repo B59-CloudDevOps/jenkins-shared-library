@@ -40,6 +40,12 @@ def call() {
                     sh "sleep 3"
                 }   
             }
+            stage('Validating the artifacts availablilty') {
+                steps {
+                    sh "aws s3 ls s3://b59-roboshop-artifacts/${component}/${component}-${BUILD_NUMBER}.zip"
+                    sh "if [ $? -ne 0 ]; then echo 'Artifact not found!'; echo "building artifact"; else echo 'Artifact found!'; exit 1; fi"
+                }   
+            }
             stage('Building Artifact') {
                 steps {
                     sh "echo 'Running Building Artifact...'"
