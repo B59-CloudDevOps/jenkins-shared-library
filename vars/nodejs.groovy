@@ -51,7 +51,6 @@ def call() {
                 steps {
                     sh "aws s3 ls"
                     sh "aws s3 cp ${component}-${BUILD_NUMBER}.zip s3://clouding-app-shop/${component}/"
-                    sh "aws s3 cp s3://b59-roboshop-artifacts/${component}/${component}-${BUILD_NUMBER}.zip"
                 }   
             }
         }
