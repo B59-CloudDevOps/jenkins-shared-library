@@ -4,6 +4,7 @@ def call() {
         agent any 
         environment {
             sonar_psw = credentials('sonar_psw') 
+            sonar_url = "sonarqube.clouding-app.shop"
         }
         stages {
             stage('Lint Checks') {
@@ -16,8 +17,17 @@ def call() {
             stage('Sonar Checks') {
                 steps {
                     sh "echo 'Running Sonar checks...'"
-                    sh "sonar-scanner -Dsonar.host.url=http://sonarqube.clouding-app.shop:9000 -Dsonar.login=admin -Dsonar.password=${sonar_psw} -Dsonar.projectKey=${component}"
+                    sh "sonar-scanner -Dsonar.host.url=http://${sonar_url}:9000 -Dsonar.login=admin -Dsonar.password=${sonar_psw} -Dsonar.projectKey=${component}"
                 }   
+            }
+            stage('Sonar Scan Result') {
+                steps {
+
+                    sh "curl https://gitlab.com/thecloudcareers/opensource/-/raw/master/lab-tools/sonar-scanner/quality-gate > gate.sh"
+                    bash -x gate.sh admin ${sonar_psw} ${sonar_url} ${component} ||true
+                    echo "SCAN Result published"
+
+                }
             }
             stage('Unit Testing') {
                 steps {
