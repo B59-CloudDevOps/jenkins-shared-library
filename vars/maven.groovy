@@ -16,7 +16,7 @@ def call() {
             }
             stage('Compliling the code') {
                 tools {
-                    maven 'mvn-396' 
+                    maven 'mvn-399' 
                 }
                 steps {
                     sh "mvn clean compile"
