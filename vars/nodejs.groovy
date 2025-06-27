@@ -50,7 +50,7 @@ def call() {
             stage('Pusing Artifact On S3') {
                 steps {
                     sh "aws s3 ls"
-                    sh "aws s3 cp ${component}-${BUILD_NUMBER}.zip s3://clouding-app-shop/${component}/"
+                    sh "aws s3 cp ${component}-${BUILD_NUMBER}.zip s3://b59-roboshop-artifacts/${component}/"
                 }   
             }
         }
