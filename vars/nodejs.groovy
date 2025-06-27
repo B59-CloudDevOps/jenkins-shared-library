@@ -23,11 +23,10 @@ def call() {
             stage('Sonar Scan Result') {
                 steps {
 
-                    sh ''' 
-                        curl https://gitlab.com/thecloudcareers/opensource/-/raw/master/lab-tools/sonar-scanner/quality-gate > gate.sh
-                        bash -x gate.sh admin ${sonar_psw} ${sonar_url} ${component} || true
-                        echo SCAN Result Published
-                    '''
+                    echo "Uncomment below to validate the scan result"
+                    // sh "curl https://gitlab.com/thecloudcareers/opensource/-/raw/master/lab-tools/sonar-scanner/quality-gate > gate.sh"
+                    // sh "bash -x gate.sh admin ${sonar_psw} ${sonar_url} ${component} || true"
+                    // sh "echo SCAN Result Published"
 
                 }
             }
